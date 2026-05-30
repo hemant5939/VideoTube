@@ -1,9 +1,9 @@
 // require('dotenv').config({path: './env'})
 import dotenv from "dotenv";
 import dns from "dns";
-//import mongoose from 'mongoose';
-
 import connectDB from "./db/index.js";
+import { app } from "./app.js";
+
 //import {app} from './app.js'
 dotenv.config({
     path: './.env'
@@ -11,7 +11,69 @@ dotenv.config({
 
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
-connectDB();
+connectDB()
+.then(() => {
+    app.listen(process.env.PORT ||  8000, () => {
+        console.log(`Server is running on port ${process.env.PORT || 8000}`);
+    });
+})
+.catch((error) => {
+    console.error('Error connecting to MongoDB:', error);
+    process.exit(1); // Exit the process with an error code
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*
