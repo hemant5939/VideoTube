@@ -15,6 +15,8 @@ connectDB()
 .then(() => {
     app.listen(process.env.PORT ||  8000, () => {
         console.log(`Server is running on port ${process.env.PORT || 8000}`);
+        console.log(`PID: ${process.pid}`);
+        console.log(`Started at: ${new Date().toISOString()}`);
     });
 })
 .catch((error) => {

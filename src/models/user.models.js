@@ -56,21 +56,21 @@ const userSchema = new Schema(
    }
 );
  
-userSchema.pre ('save', async function(next){
+userSchema.pre ('save', async function(next){             //signup se pehle password hash karne ke liye
     if(!this.isModified('password')) return next();
-    this.password = bcrypt.hash(this.password, 10);
+    this.password = await bcrypt.hash(this.password, 10);
     next();
 });
 
-userSchema.methods.comparePassword = async function(password){
+userSchema.methods.comparePassword = async function(password){    //login ke time password match karne ke liye
     return await bcrypt.compare(password, this.password);
 }
 
-userSchema.methods.generateAccessToken = function(){
-    return jwt.sign(
+userSchema.methods.generateAccessToken = function(){        //jwt token generate karne ke liye login/signup ke time
+    return jwt.sign(                                       //payload
         {
             _id: this._id,
-            email: this.email,
+            email: this.email,                                //token me email aur username bhi bhej rahe hai taki user ke baare me pata chale token dekh ke
             username: this.username,
             fullName: this.fullName
         },
@@ -80,10 +80,10 @@ userSchema.methods.generateAccessToken = function(){
         }
     )
 }
-userSchema.methods.generateRefreshToken = function(){
+userSchema.methods.generateRefreshToken = function(){       //refresh token generate karne ke liye login/signup ke time
     return jwt.sign(
         {
-            _id: this._id,
+            _id: this._id,           //refresh token me sirf user id hi bhej rahe hai taki pata chale ki ye token kis user ke liye hai, baki info access token me hi bhej rahe hai
             
         },
         process.env.REFRESH_TOKEN_SECRET,
