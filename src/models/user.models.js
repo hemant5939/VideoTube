@@ -32,7 +32,6 @@ const userSchema = new Schema(
         },
         coverImage : {
             type : String, // claudinary url
-            required : true,
         },
 
         watchHistory : [
@@ -57,9 +56,8 @@ const userSchema = new Schema(
 );
  
 userSchema.pre ('save', async function(next){             //signup se pehle password hash karne ke liye
-    if(!this.isModified('password')) return next();
+    if(!this.isModified('password')) return;
     this.password = await bcrypt.hash(this.password, 10);
-    next();
 });
 
 userSchema.methods.comparePassword = async function(password){    //login ke time password match karne ke liye
